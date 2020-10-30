@@ -4,37 +4,40 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 
-public class FileReader {
+public class FileReader implements AutoCloseable {
 
     // --> create scanner
-    Scanner s;
+    private Scanner filereader;
 
     // Constructor --> give scanner a name and file and check if the file is available
-    FileReader(File f) {
+    public FileReader(File file) {
         try {
-            s = new Scanner(f);
+            filereader = new Scanner(file);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
     }
 
+    public Person[] person = new Person [0];
+
     // --> output of the data / create a new object / save the information of each line in the object / output-Method from Person
     public void output() {
         int i = 0;
-        while (s.hasNext()) {
+        while (filereader.hasNext()) {
             Person p = new Person();
             p.pid = ++i;
-            p.vorname = s.next();
-            p.nachname = s.next();
-            p.klasse = s.next();
-            p.telefonnummer = s.next();
-            p.status = s.next();
+            p.vorname = filereader.next();
+            p.nachname = filereader.next();
+            p.klasse = filereader.next();
+            p.telefonnummer = filereader.next();
+            p.status = filereader.next();
             p.person_output();
         }
     }
 
     // --> close the file
+    @Override
     public void close() {
-        s.close();
+        filereader.close();
     }
 }

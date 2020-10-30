@@ -3,15 +3,15 @@ package me.simon.mAGmal;
 public class Person {
 
     // attribute
-    int pid;
-    String vorname;
-    String nachname;
-    String klasse;
-    String telefonnummer;
-    String status;
+    public int pid;
+    public String vorname;
+    public String nachname;
+    public String klasse;
+    public String telefonnummer;
+    public String status;
 
     //constructor
-    Person (){
+    public Person (){
         pid  = 0;
         vorname = "---";
         nachname = "---";
@@ -22,11 +22,6 @@ public class Person {
 
     // --> output of each object
     public void person_output () {
-        System.out.print(pid +" ");
-        System.out.print(vorname + " ");
-        System.out.print(nachname +" ");
-        System.out.print(klasse + " ");
-        System.out.print(telefonnummer + " ");
-        System.out.println(status + " ");
+        System.out.printf("%d %s %s %s %s %s\n", pid, vorname, nachname, klasse, telefonnummer, status);
     }
 }

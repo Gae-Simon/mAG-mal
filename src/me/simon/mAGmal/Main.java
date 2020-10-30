@@ -8,15 +8,15 @@ public class Main {
     public static void main(String[] args) {
 
         //--> create a new file with pathname
-        File f = new File("C:\\Users\\simon\\OneDrive\\Desktop\\test.txt");
+        File file = new File("C://Users//simon//OneDrive//Desktop//test.txt");
 
-        //--> give class FileReader the file f
-        FileReader dr = new FileReader(f);
+        //--> give class FileReader the file f and start output of the file and close the file
+        try (FileReader fileReader = new FileReader(file)) {
+            fileReader.output();
+        }
 
-        //--> start output of the file
-        dr.output();
 
-        //--> close the file
-        dr.close();
     }
+
+
 }
