@@ -20,20 +20,16 @@ public class FileReader {
 
     // --> output of the data / create a new object / save the information of each line in the object / output-Method from Person
     public void output() {
-        for (int i = 1; i < Integer.MAX_VALUE; i++) {
-            if (s.hasNext()) {
-                Person p = new Person();
-                p.pid = i;
-                p.vorname = s.next();
-                p.nachname = s.next();
-                p.klasse = s.next();
-                p.telefonnummer = s.next();
-                p.status = s.next();
-                p.person_output();
-            } else {
-                return;
-            }
-
+        int i = 0;
+        while (s.hasNext()) {
+            Person p = new Person();
+            p.pid = ++i;
+            p.vorname = s.next();
+            p.nachname = s.next();
+            p.klasse = s.next();
+            p.telefonnummer = s.next();
+            p.status = s.next();
+            p.person_output();
         }
     }
 
