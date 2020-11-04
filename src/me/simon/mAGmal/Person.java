@@ -3,25 +3,25 @@ package me.simon.mAGmal;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class Person {
 
+    private static final AtomicInteger idCount = new AtomicInteger();
+
     // attribute
-    public int pid;
+    public int pid = idCount.incrementAndGet();
     public String vorname;
     public String nachname;
     public String klasse;
     public String telefonnummer;
-    public String status;
+    public PersonStatus status = PersonStatus.NONE;
 
     //constructor
     public Person() {
-        pid = 0;
-        vorname = "---";
-        nachname = "---";
-        klasse = "0";
-        telefonnummer = "0";
-        status = "---";
+
     }
 
     // --> create list for teacher and student
@@ -29,35 +29,43 @@ public class Person {
     private static ArrayList<Person> schuelerList = new ArrayList<>();
 
     // --> save each object in a specific list
-    public void savePerson(@NotNull Person p) {
+    public void savePerson(@NotNull Person person) {
 
-        if ("lehrer".equalsIgnoreCase(p.status)) {
-            lehrerList.add(p);
-        } else {
-            schuelerList.add(p);
+        switch (person.status) {
+            case LEHRER:
+                lehrerList.add(person);
+                break;
+            case SCHUELER:
+                schuelerList.add(person);
+                break;
+            default:
+                System.out.println("Warnung :: Status von " + person + " komisch");
         }
     }
 
     // --> output of the list
-    public void outputPerson() {
+    public static void outputPersonen() {
+        System.out.println();
         System.out.println("Lehrer:");
         for (Person lehrer : lehrerList) {
             System.out.println(lehrer);
+            System.out.println();
         }
         System.out.println("Schüler:");
         for (Person schueler : schuelerList) {
             System.out.println(schueler);
         }
+        System.out.println();
     }
 
     @Override
     public String toString() {
-        return "pid=" + pid +
+        return "Person [pid=" + pid +
                 ", vorname='" + vorname + '\'' +
                 ", nachname='" + nachname + '\'' +
                 ", klasse='" + klasse + '\'' +
                 ", telefonnummer='" + telefonnummer + '\'' +
-                ", status='" + status + '\'';
+                ", status='" + status + '\'' + ']';
 
     }
 }

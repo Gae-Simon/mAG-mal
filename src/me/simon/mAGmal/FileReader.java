@@ -21,9 +21,9 @@ public class FileReader implements AutoCloseable {
     // --> output of the data / create a new object / save the information of each line in the object / output-Method from Person
     public void output() {
         int i = 0;
-        Person p = new Person();
         while (filereader.hasNext()) {
-            p.pid = ++i;
+            Person p = new Person();
+
             p.vorname = filereader.next();
             if (filereader.hasNext()) {
                 p.nachname = filereader.next();
@@ -35,12 +35,12 @@ public class FileReader implements AutoCloseable {
                 p.telefonnummer = filereader.next();
             }
             if (filereader.hasNext()) {
-                p.status = filereader.next();
+                String statusStr = filereader.next();
+                p.status = PersonStatus.get(statusStr);
             }
-            //System.out.println(p.status);
             p.savePerson(p);
-            p.outputPerson();
         }
+        Person.outputPersonen();
     }
 
     // --> close the file
