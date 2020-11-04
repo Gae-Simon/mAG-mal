@@ -18,19 +18,29 @@ public class FileReader implements AutoCloseable {
         }
     }
 
-    public Person[] person = new Person [0];
+    public Person[] person = new Person[0];
 
     // --> output of the data / create a new object / save the information of each line in the object / output-Method from Person
     public void output() {
         int i = 0;
+        Person p = new Person();
         while (filereader.hasNext()) {
-            Person p = new Person();
             p.pid = ++i;
             p.vorname = filereader.next();
-            p.nachname = filereader.next();
-            p.klasse = filereader.next();
-            p.telefonnummer = filereader.next();
-            p.status = filereader.next();
+            if (filereader.hasNext()) {
+                p.nachname = filereader.next();
+            }
+            if (filereader.hasNext()) {
+                p.klasse = filereader.next();
+            }
+            if (filereader.hasNext()) {
+                p.telefonnummer = filereader.next();
+            }
+            if (filereader.hasNext()) {
+                p.status = filereader.next();
+            }
+            //System.out.println(p.status);
+            p.save_person(p);
             p.person_output();
         }
     }

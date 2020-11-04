@@ -14,9 +14,5 @@ public class Main {
         try (FileReader fileReader = new FileReader(file)) {
             fileReader.output();
         }
-
-
     }
-
-
 }
