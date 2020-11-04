@@ -18,8 +18,6 @@ public class FileReader implements AutoCloseable {
         }
     }
 
-    public Person[] person = new Person[0];
-
     // --> output of the data / create a new object / save the information of each line in the object / output-Method from Person
     public void output() {
         int i = 0;
@@ -40,8 +38,8 @@ public class FileReader implements AutoCloseable {
                 p.status = filereader.next();
             }
             //System.out.println(p.status);
-            p.save_person(p);
-            p.person_output();
+            p.savePerson(p);
+            p.outputPerson();
         }
     }
 

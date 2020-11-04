@@ -25,33 +25,28 @@ public class Person {
     }
 
     // --> create list for teacher and student
-    ArrayList<Person> lehrerList = new ArrayList<>();
-    ArrayList<Person> schuelerList = new ArrayList<>();
+    private static ArrayList<Person> lehrerList = new ArrayList<>();
+    private static ArrayList<Person> schuelerList = new ArrayList<>();
 
     // --> save each object in a specific list
-    int i = 0;
-    int j = 0;
-
-    public void save_person(@NotNull Person p) {
+    public void savePerson(@NotNull Person p) {
 
         if ("lehrer".equalsIgnoreCase(p.status)) {
-            lehrerList.add(i, p);
-            i++;
+            lehrerList.add(p);
         } else {
-            schuelerList.add(j, p);
-            j++;
+            schuelerList.add(p);
         }
     }
 
     // --> output of the list
-    public void person_output() {
+    public void outputPerson() {
         System.out.println("Lehrer:");
-        for (int k = 0; k < lehrerList.size(); k++) {
-            System.out.println(lehrerList.get(k));
+        for (Person lehrer : lehrerList) {
+            System.out.println(lehrer);
         }
         System.out.println("Schüler:");
-        for (int k = 0; k < schuelerList.size(); k++) {
-            System.out.println(schuelerList.get(k));
+        for (Person schueler : schuelerList) {
+            System.out.println(schueler);
         }
     }
 
