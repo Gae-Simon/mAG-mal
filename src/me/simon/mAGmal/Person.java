@@ -2,7 +2,10 @@ package me.simon.mAGmal;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.sql.Connection;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class Person {
@@ -11,12 +14,15 @@ public class Person {
     private static final AtomicInteger idCount = new AtomicInteger();
 
     // attribute
-    public int pid = idCount.incrementAndGet();
     public String vorname;
     public String nachname;
     public String klasse;
     public String telefonnummer;
     public PersonStatus status = PersonStatus.NONE;
+
+    public int getId() {
+        return (this.vorname + "$" + this.nachname).hashCode();
+    }
 
     //constructor
     public Person() {
@@ -42,6 +48,14 @@ public class Person {
         }
     }
 
+    public static ArrayList<Person> getSchuelerList (){
+        return schuelerList;
+    }
+
+    public static ArrayList<Person> getLehrerList (){
+        return lehrerList;
+    }
+
     // --> output of the list
     public static void outputPersonen() {
         System.out.println();
@@ -59,7 +73,7 @@ public class Person {
 
     @Override
     public String toString() {
-        return "Person [pid=" + pid +
+        return "Person [pid=" + this.getId() +
                 ", vorname='" + vorname + '\'' +
                 ", nachname='" + nachname + '\'' +
                 ", klasse='" + klasse + '\'' +
@@ -67,4 +81,6 @@ public class Person {
                 ", status='" + status + '\'' + ']';
 
     }
+
+
 }
