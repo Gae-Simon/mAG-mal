@@ -20,11 +20,17 @@ public class Main {
     public static void main(String[] args) {
 
         //--> create a new file with pathname
-        File file = new File("C://Users//simon//OneDrive//Desktop//test.txt");
+        File personFile = new File("C://Users//simon//OneDrive//Desktop//Personen_Liste.txt");
+        File wGFile = new File("C://Users//simon//OneDrive//Desktop//AG_Liste.txt");
 
-        //--> give class FileReader the file f and start output of the file and close the file
-        try (FileReader fileReader = new FileReader(file)) {
-            fileReader.output();
+        //--> give class FileReaderPerson the file and start output of the file and close the file
+        try (FileReaderPerson fileReader = new FileReaderPerson(personFile)) {
+            fileReader.readingPersons();
+        }
+
+        //--> give class FileReaderWG the file and start output of the file and close the file
+        try (FileReaderWG fileReader = new FileReaderWG(wGFile)) {
+            fileReader.readingWGs();
         }
 
 
@@ -40,9 +46,10 @@ public class Main {
                 // get Lists
                 ArrayList<Person> schuelerList = Person.getSchuelerList();
                 ArrayList<Person> lehrerList = Person.getLehrerList();
+                ArrayList<WG> wgList = WG.getWgList();
 
                 // JOptionPane selection
-                Object [] options = {"Schüler einlesen", "Leher einlesen", "Beenden"};
+                Object[] options = {"Schüler einlesen", "Lehrer einlesen", "AG einlesen", "AG zusammen mit Lehrer", "Beenden"};
 
                 selection:
                 while (true) {
@@ -59,6 +66,14 @@ public class Main {
                             SQLInstructions.insertionTeacher(lehrerList, connection);
                             break;
                         case 2:
+                            // Insertion of the WG
+                            SQLInstructions.insertionWG(wgList, connection);
+                            break;
+                        case 3:
+                            // Request Teacher together with WG
+                            SQLInstructions.requestTeacherTogetherWG(wgList, lehrerList, connection);
+                            break;
+                        case 4:
                             // Close Button
                             break selection;
                     }
