@@ -1,9 +1,9 @@
 package me.simon.mAGmal;
 
+import javax.swing.*;
 import java.io.File;
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.PreparedStatement;
 import java.util.ArrayList;
 
 public class Main {
@@ -32,65 +32,42 @@ public class Main {
             // Open driver
             Class.forName(JDBC_Driver);
 
-            // connection to database
+            // connection and instructions to database
             try (final Connection connection = DriverManager.getConnection(DB_URL, USER, PASS)) {
 
-                System.out.println("Connection is successful");
+                System.out.println("Connection is successful!");
 
                 // get Lists
                 ArrayList<Person> schuelerList = Person.getSchuelerList();
                 ArrayList<Person> lehrerList = Person.getLehrerList();
 
-                // Insertion of the students
-                for (Person person : schuelerList) {
-                    final String sql = "INSERT INTO students " +
-                            "(`sId`, `firstName`, `lastName`, `class`, `phonenumber`) " +
-                            "VALUES " +
-                            "(?,?,?,?,?) " +
-                            "ON DUPLICATE KEY UPDATE " +
-                            "firstName = ?, lastName = ?, class = ?, phonenumber = ?;";
-                    try (final PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+                // JOptionPane selection
+                Object [] options = {"Schüler einlesen", "Leher einlesen", "Beenden"};
 
-                        preparedStatement.setInt(1, person.getId());
-                        preparedStatement.setString(2, person.vorname);
-                        preparedStatement.setString(3, person.nachname);
-                        preparedStatement.setString(4, person.klasse);
-                        preparedStatement.setString(5, person.telefonnummer);
-                        preparedStatement.setString(6, person.vorname);
-                        preparedStatement.setString(7, person.nachname);
-                        preparedStatement.setString(8, person.klasse);
-                        preparedStatement.setString(9, person.telefonnummer);
+                selection:
+                while (true) {
+                    int selected = JOptionPane.showOptionDialog(null, "Was möchten sie machen?", "Menü",
+                            JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[0]);
 
-                        System.out.println(preparedStatement.toString());
-
-                        preparedStatement.executeUpdate();
+                    switch (selected) {
+                        case 0:
+                            // Insertion of the students
+                            SQLInstructions.insertionStudents(schuelerList, connection);
+                            break;
+                        case 1:
+                            // Insertion of the teacher
+                            SQLInstructions.insertionTeacher(lehrerList, connection);
+                            break;
+                        case 2:
+                            // Close Button
+                            break selection;
                     }
                 }
-                // Insertion of the teachers
-                for (Person person : lehrerList) {
-                    final String sql = "INSERT INTO teachers " +
-                            "(`lId`, `firstName`, `lastName`) " +
-                            "VALUES " +
-                            "(?,?,?) " +
-                            "ON DUPLICATE KEY UPDATE " +
-                            "firstName = ?, lastName = ?;";
-                    try (final PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-
-                        preparedStatement.setInt(1, person.getId());
-                        preparedStatement.setString(2, person.vorname);
-                        preparedStatement.setString(3, person.nachname);
-                        preparedStatement.setString(4, person.vorname);
-                        preparedStatement.setString(5, person.nachname);
-
-                        System.out.println(preparedStatement.toString());
-
-                        preparedStatement.executeUpdate();
-
-                    }
-                }
-
-                // SQL Statement execute
-                System.out.println("SQL-Anweisung ausgeführt!");
+                // SQL finished
+                System.out.println();
+                System.out.println("SQL-Instruction executed!");
+                System.out.println();
+                System.out.println("Connection is closed!");
 
             }
         } catch (Exception e) {
