@@ -29,7 +29,7 @@ public class FileReaderWG implements AutoCloseable {
             if (filereaderWG.hasNext()){
                 wg.teacherlastname = filereaderWG.next();
             }
-            wg.saveWG(wg);
+            WG.saveWG(wg);
         }
         WG.outputWG();
 
