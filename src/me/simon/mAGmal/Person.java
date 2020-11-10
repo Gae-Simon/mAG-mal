@@ -1,11 +1,7 @@
 package me.simon.mAGmal;
 
 import org.jetbrains.annotations.NotNull;
-
-import java.sql.Connection;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class Person {
