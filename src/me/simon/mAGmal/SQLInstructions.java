@@ -1,6 +1,7 @@
 package me.simon.mAGmal;
 
 import org.jetbrains.annotations.NotNull;
+
 import javax.swing.*;
 import java.sql.*;
 import java.util.List;
@@ -174,7 +175,7 @@ public class SQLInstructions {
     }
 
     // Output WG Members
-    public static void wgMemberOutput (@NotNull Connection connection) throws SQLException {
+    public static void wgMemberOutput(@NotNull Connection connection) throws SQLException {
 
         // Input
         String wgAuswahlInput = JOptionPane.showInputDialog("Welche AG willst du Ausgeben?");
@@ -182,7 +183,7 @@ public class SQLInstructions {
         ResultSet resultSet = null;
         Statement statement = connection.createStatement();
 
-        if (wgAuswahlInput.equalsIgnoreCase("Alle")){
+        if (wgAuswahlInput.equalsIgnoreCase("Alle")) {
 
             // SQL Instruction
             sql = "SELECT students.firstName, students.lastName, students.class, ag.description " +
@@ -205,10 +206,10 @@ public class SQLInstructions {
                     "ORDER BY students.lastName";
 
 
-            try (final PreparedStatement preparedStatement = connection.prepareStatement(sql)){
+            try (final PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
                 preparedStatement.setString(1, wgAuswahlInput);
                 resultSet = preparedStatement.executeQuery();
-            } catch (SQLException e){
+            } catch (SQLException e) {
                 e.printStackTrace();
             }
         }
@@ -216,20 +217,20 @@ public class SQLInstructions {
         // count columns
         assert resultSet != null;
         int columns = resultSet.getMetaData().getColumnCount();
-        System.out.println("Alle Eintragungen zu " + wgAuswahlInput +": ");
+        System.out.println("Alle Eintragungen zu " + wgAuswahlInput + ": ");
 
         // output of the columns labels
-        for (int i = 1; i <= columns; i++){
+        for (int i = 1; i <= columns; i++) {
             System.out.printf("%16s", resultSet.getMetaData().getColumnLabel(i));
         }
         System.out.println();
 
         // output of each row
-        while (resultSet.next()){
-                for (int j = 1; j <= columns; j++){
-                    System.out.printf("%16s", resultSet.getString(j));
-                }
-                System.out.println();
+        while (resultSet.next()) {
+            for (int j = 1; j <= columns; j++) {
+                System.out.printf("%16s", resultSet.getString(j));
+            }
+            System.out.println();
         }
 
         // --> statement and result set closed

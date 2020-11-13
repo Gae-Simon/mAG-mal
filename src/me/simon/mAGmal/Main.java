@@ -1,7 +1,5 @@
 package me.simon.mAGmal;
 
-import org.mariadb.jdbc.internal.util.SqlStates;
-
 import javax.swing.*;
 import java.io.File;
 import java.sql.Connection;
