@@ -1,5 +1,7 @@
 package me.simon.mAGmal;
 
+import org.mariadb.jdbc.internal.util.SqlStates;
+
 import javax.swing.*;
 import java.io.File;
 import java.sql.Connection;
@@ -49,7 +51,8 @@ public class Main {
                 ArrayList<WG> wgList = WG.getWgList();
 
                 // JOptionPane selection
-                Object[] options = {"Schüler einlesen", "Lehrer einlesen", "AG einlesen", "AG zusammen mit Lehrer", "Beenden"};
+                Object[] options = {"Schüler einlesen", "Lehrer einlesen", "AG einlesen", "AG zusammen mit Lehrer",
+                        "Schüler AG zuweisen", "Ausgabe AG Mitglieder", "Beenden"};
 
                 selection:
                 while (true) {
@@ -74,6 +77,14 @@ public class Main {
                             SQLInstructions.requestTeacherTogetherWG(wgList, lehrerList, connection);
                             break;
                         case 4:
+                            // Allocation student to WG
+                            SQLInstructions.studentAllocate(wgList, schuelerList, connection);
+                            break;
+                        case 5:
+                            // Output WG Members
+                            SQLInstructions.wgMemberOutput(connection);
+                            break;
+                        case 6:
                             // Close Button
                             break selection;
                     }
