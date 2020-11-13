@@ -7,4 +7,8 @@ let them indicate which student is in which WG.
 (WG = Working Group)
 
 ## **Database**
-![Database](https://user-images.githubusercontent.com/72092509/98447336-51cf2000-2124-11eb-94da-71d16d936661.png)
+![Database](https://user-images.githubusercontent.com/72092509/98821305-abd72a80-242f-11eb-9fef-1294c33c224d.png)
+<br/>
+<br/>
+## **Use Case**
+![Use Case](https://user-images.githubusercontent.com/72092509/98820957-2eabb580-242f-11eb-9082-02b4407d86be.png)
