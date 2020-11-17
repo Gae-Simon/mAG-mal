@@ -1,37 +1,28 @@
-## Welcome to GitHub Pages
+# **mAG-mal**
+- [**mAG-mal**](#--mag-mal--)
+      - [English:](#english-)
+      - [Deutsch:](#deutsch-)
+  * [**Database**](#--database--)
+  * [**Use Case**](#--use-case--)
 
-You can use the [editor on GitHub](https://github.com/Gae-Simon/mAG-mal/edit/gh-pages/index.md) to maintain and preview the content for your website in Markdown files.
+#### English:
+This is a school project, which allows the administration of WGs
+simplified. Students are read from a text file. Finally,
+you can assign students to WGs and create tables
+let them indicate which student is in which WG.
+ 
+(WG = Working Group)
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+#### Deutsch:
+Dieses Schulprojekt ermöglicht die Verwaltung von AGs. Die Schüler, Lehrer und AGs werden
+aus einer Textdatei ausgelesen und anschließend in eine Datenbank eingepflegt. Schlussendlich kann
+man sich Tabellen mit verschiedenen Informationen ausgeben lassen, so z.B. auch die Mitglieder einer AG.
 
-### Markdown
+(AG = Arbeitsgruppen)
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
-
-```markdown
-Syntax highlighted code block
-
-# Header 1
-## Header 2
-### Header 3
-
-- Bulleted
-- List
-
-1. Numbered
-2. List
-
-**Bold** and _Italic_ and `Code` text
-
-[Link](url) and ![Image](src)
-```
-
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
-
-### Jekyll Themes
-
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/Gae-Simon/mAG-mal/settings). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
-
-### Support or Contact
-
-Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://github.com/contact) and we’ll help you sort it out.
+## **Database**
+![Database](https://user-images.githubusercontent.com/72092509/98821305-abd72a80-242f-11eb-9fef-1294c33c224d.png)
+<br/>
+<br/>
+## **Use Case**
+![Use Case mAG-mal](https://user-images.githubusercontent.com/72092509/99357206-d1d75180-28ab-11eb-8750-52de1afe70f1.png)
