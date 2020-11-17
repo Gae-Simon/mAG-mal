@@ -11,4 +11,4 @@ let them indicate which student is in which WG.
 <br/>
 <br/>
 ## **Use Case**
-![Use Case](https://user-images.githubusercontent.com/72092509/98820957-2eabb580-242f-11eb-9082-02b4407d86be.png)
+![Use Case mAG-mal](https://user-images.githubusercontent.com/72092509/99357206-d1d75180-28ab-11eb-8750-52de1afe70f1.png)
