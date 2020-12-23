@@ -1,9 +1,12 @@
 package me.simon.mAGmal;
 
 import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class Main {
@@ -34,20 +37,49 @@ public class Main {
         }
 
 
+        // connection and instructions to database
         try {
             // Open driver
             Class.forName(JDBC_Driver);
 
-            // connection and instructions to database
-            try (final Connection connection = DriverManager.getConnection(DB_URL, USER, PASS)) {
+            final Connection connection = DriverManager.getConnection(DB_URL, USER, PASS);
+            Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+                System.out.println("Closing connection to database");
+                try {
+                    connection.close();
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
+            }));
+            System.out.println("Connection is successful!");
 
-                System.out.println("Connection is successful!");
+            // get Lists
+            ArrayList<Person> schuelerList = Person.getSchuelerList();
+            ArrayList<Person> lehrerList = Person.getLehrerList();
+            ArrayList<WG> wgList = WG.getWgList();
 
-                // get Lists
-                ArrayList<Person> schuelerList = Person.getSchuelerList();
-                ArrayList<Person> lehrerList = Person.getLehrerList();
-                ArrayList<WG> wgList = WG.getWgList();
+            //JFrame
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+            SwingUtilities.invokeLater(new Runnable() {
 
+                @Override
+                public void run() {
+                    GUI gui = new GUI();
+                    gui.setVisible(true);
+
+                    gui.schülerEinlesenButton.addActionListener(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            // Insertion of the students
+                            SQLInstructions.insertionStudents(schuelerList, connection);
+                        }
+                    });
+
+                }
+            });
+
+
+                /*
                 // JOptionPane selection
                 Object[] options = {"Schüler einlesen", "Lehrer einlesen", "AG einlesen", "AG zusammen mit Lehrer",
                         "Schüler AG zuweisen", "Ausgabe AG Mitglieder", "Beenden"};
@@ -62,6 +94,7 @@ public class Main {
                             // Insertion of the students
                             SQLInstructions.insertionStudents(schuelerList, connection);
                             break;
+
                         case 1:
                             // Insertion of the teacher
                             SQLInstructions.insertionTeacher(lehrerList, connection);
@@ -87,13 +120,7 @@ public class Main {
                             break selection;
                     }
                 }
-                // SQL finished
-                System.out.println();
-                System.out.println("SQL-Instruction executed!");
-                System.out.println();
-                System.out.println("Connection is closed!");
-
-            }
+                */
         } catch (Exception e) {
             e.printStackTrace();
         }

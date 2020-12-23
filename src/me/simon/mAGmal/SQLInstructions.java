@@ -19,7 +19,6 @@ public class SQLInstructions {
                     "firstName = ?, lastName = ?, class = ?, phonenumber = ?;";
 
             try (final PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-
                 preparedStatement.setInt(1, person.getId());
                 preparedStatement.setString(2, person.vorname);
                 preparedStatement.setString(3, person.nachname);
@@ -31,6 +30,7 @@ public class SQLInstructions {
                 preparedStatement.setString(9, person.telefonnummer);
 
                 System.out.println(preparedStatement.toString());
+
 
                 preparedStatement.executeUpdate();
 
