@@ -13,12 +13,11 @@ public class Gui extends JFrame {
     public JButton zuordnungSchuelerZuAGButton;
     public JButton ausgabeAGMitgliederButton;
     public JButton lehrerEinlesenButton;
-    private JScrollBar scrollBar1;
 
     public Gui (){
         add(rootPanel);
         setTitle("mAG-mal");
-        setSize(800,800);
+        setSize(1000,1000);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
     }
 }

@@ -1,6 +1,7 @@
 package me.simon.mAGmal;
 
 import javax.swing.*;
+import javax.swing.text.DefaultCaret;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -27,7 +28,7 @@ public class Main {
 
         // --> output message of Text Area
         gui.textArea1.append(message + "\n");
-
+        gui.textArea1.setCaretPosition(gui.textArea1.getDocument().getLength()-1);
     }
 
     public static void printf(final String distance, final Object message) {
@@ -42,8 +43,8 @@ public class Main {
 
 
         //--> create a new file with pathname
-        File personFile = new File("C://Users//simon//OneDrive//Desktop//Personen_Liste.txt");
-        File wGFile = new File("C://Users//simon//OneDrive//Desktop//AG_Liste.txt");
+        File personFile = new File("C://Users//simon//OneDrive//Desktop", "Personen_Liste.txt");
+        File wGFile = new File("C://Users//simon//OneDrive//Desktop", "AG_Liste.txt");
 
         //--> give class FileReaderPerson the file and start output of the file and close the file
         try (FileReaderPerson fileReader = new FileReaderPerson(personFile)) {
@@ -60,9 +61,17 @@ public class Main {
         try {
             Class.forName(JDBC_DRIVER);
         } catch (final ClassNotFoundException cnfex) {
-            JOptionPane.showMessageDialog(null, "Fehler", "Hey! Dir fehlt der JDBC-Treiber! Das Programm kann nicht auf die Datenbank zugreifen.", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(
+                    null,
+                    "Hey! Dir fehlt der JDBC-Treiber! Das Programm kann nicht auf die Datenbank zugreifen.",
+                    "Fehler",
+                    JOptionPane.ERROR_MESSAGE
+            );
+
             System.exit(1);
+            return;
         }
+
         try {
             final Connection connection = DriverManager.getConnection(DB_URL, USER, PASS);
             Runtime.getRuntime().addShutdownHook(new Thread(() -> {
