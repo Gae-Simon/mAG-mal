@@ -1,27 +1,50 @@
 package me.simon.mAGmal;
 
 import javax.swing.*;
+import javax.swing.text.DefaultCaret;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class Main {
 
     // JDBC driver name and database URL
-    static final String JDBC_Driver = "org.mariadb.jdbc.Driver";
+    static final String JDBC_DRIVER = "org.mariadb.jdbc.Driver";
     static final String DB_URL = "jdbc:mariadb://127.0.0.1:3306/magmal?autoReconnect=true&useSSL=false";
 
     // Database credentials
     static final String USER = "root";
     static final String PASS = "ZsMZHrSLf^6ycRQ";
 
+    // create gui
+    public static Gui gui = new Gui();
+
+    public static void println(final String message) {
+        System.out.println(message);
+
+        // --> output message of Text Area
+        gui.textArea1.append(message + "\n");
+        gui.textArea1.setCaretPosition(gui.textArea1.getDocument().getLength()-1);
+    }
+
+    public static void printf(final String distance, final Object message) {
+        System.out.printf(distance, message);
+
+        //--> output message of Text Area
+        // TODO: finish that
+    }
+
     //--> main Method
-    public static void main(String[] args) {
+    public static void main(String[] args) throws SQLException {
+
 
         //--> create a new file with pathname
-        File personFile = new File("C://Users//simon//OneDrive//Desktop//Personen_Liste.txt");
-        File wGFile = new File("C://Users//simon//OneDrive//Desktop//AG_Liste.txt");
+        File personFile = new File("C://Users//simon//OneDrive//Desktop", "Personen_Liste.txt");
+        File wGFile = new File("C://Users//simon//OneDrive//Desktop", "AG_Liste.txt");
 
         //--> give class FileReaderPerson the file and start output of the file and close the file
         try (FileReaderPerson fileReader = new FileReaderPerson(personFile)) {
@@ -34,66 +57,111 @@ public class Main {
         }
 
 
+        // connection and instructions to database
         try {
-            // Open driver
-            Class.forName(JDBC_Driver);
+            Class.forName(JDBC_DRIVER);
+        } catch (final ClassNotFoundException cnfex) {
+            JOptionPane.showMessageDialog(
+                    null,
+                    "Hey! Dir fehlt der JDBC-Treiber! Das Programm kann nicht auf die Datenbank zugreifen.",
+                    "Fehler",
+                    JOptionPane.ERROR_MESSAGE
+            );
 
-            // connection and instructions to database
-            try (final Connection connection = DriverManager.getConnection(DB_URL, USER, PASS)) {
+            System.exit(1);
+            return;
+        }
 
-                System.out.println("Connection is successful!");
+        try {
+            final Connection connection = DriverManager.getConnection(DB_URL, USER, PASS);
+            Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+                System.out.println("Closing connection to database");
+                try {
+                    connection.close();
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
+            }));
+            println("Connection is successful!");
 
-                // get Lists
-                ArrayList<Person> schuelerList = Person.getSchuelerList();
-                ArrayList<Person> lehrerList = Person.getLehrerList();
-                ArrayList<WG> wgList = WG.getWgList();
+            // get Lists
+            ArrayList<Person> schuelerList = Person.getSchuelerList();
+            ArrayList<Person> lehrerList = Person.getLehrerList();
+            ArrayList<WG> wgList = WG.getWgList();
 
-                // JOptionPane selection
-                Object[] options = {"Schüler einlesen", "Lehrer einlesen", "AG einlesen", "AG zusammen mit Lehrer",
-                        "Schüler AG zuweisen", "Ausgabe AG Mitglieder", "Beenden"};
+            //JFrame
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+            SwingUtilities.invokeLater(new Runnable() {
 
-                selection:
-                while (true) {
-                    int selected = JOptionPane.showOptionDialog(null, "Was möchten sie machen?", "Menü",
-                            JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[0]);
+                @Override
+                public void run() {
 
-                    switch (selected) {
-                        case 0:
+                    gui.setVisible(true);
+
+                    gui.schuelerEinlesenButton.addActionListener(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
                             // Insertion of the students
                             SQLInstructions.insertionStudents(schuelerList, connection);
-                            break;
-                        case 1:
-                            // Insertion of the teacher
+                        }
+                    });
+
+                    gui.lehrerEinlesenButton.addActionListener(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            //Insertion of the teachers
                             SQLInstructions.insertionTeacher(lehrerList, connection);
-                            break;
-                        case 2:
+                        }
+                    });
+
+                    gui.AGEinlesenButton.addActionListener(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
                             // Insertion of the WG
                             SQLInstructions.insertionWG(wgList, connection);
-                            break;
-                        case 3:
-                            // Request Teacher together with WG
-                            SQLInstructions.requestTeacherTogetherWG(wgList, lehrerList, connection);
-                            break;
-                        case 4:
-                            // Allocation student to WG
-                            SQLInstructions.studentAllocate(wgList, schuelerList, connection);
-                            break;
-                        case 5:
-                            // Output WG Members
-                            SQLInstructions.wgMemberOutput(connection);
-                            break;
-                        case 6:
-                            // Close Button
-                            break selection;
-                    }
-                }
-                // SQL finished
-                System.out.println();
-                System.out.println("SQL-Instruction executed!");
-                System.out.println();
-                System.out.println("Connection is closed!");
+                        }
+                    });
 
-            }
+                    gui.lehrerZusammenMitAGButton.addActionListener(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            // Request Teacher together with WG
+                            try {
+                                SQLInstructions.requestTeacherTogetherWG(wgList, lehrerList, connection);
+                            } catch (SQLException throwables) {
+                                throwables.printStackTrace();
+                            }
+                        }
+                    });
+
+                    gui.zuordnungSchuelerZuAGButton.addActionListener(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            //Allocation student to WG
+                            try {
+                                SQLInstructions.studentAllocate(wgList, schuelerList, connection);
+                            } catch (SQLException throwables) {
+                                throwables.printStackTrace();
+                            }
+                        }
+                    });
+
+                    gui.ausgabeAGMitgliederButton.addActionListener(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            // Output WG Members
+                            try {
+                                SQLInstructions.wgMemberOutput(connection);
+                            } catch (SQLException throwables) {
+                                throwables.printStackTrace();
+                            }
+                        }
+                    });
+
+
+                }
+            });
+
         } catch (Exception e) {
             e.printStackTrace();
         }
