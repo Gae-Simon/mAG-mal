@@ -4,6 +4,8 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
+import static me.simon.mAGmal.Main.println;
+
 public class Person {
 
     // attribute
@@ -39,7 +41,7 @@ public class Person {
                 schuelerList.add(person);
                 break;
             default:
-                System.out.println("Warnung :: Status von " + person + " komisch");
+                println("Warnung :: Status von " + person + " komisch");
         }
     }
 
@@ -54,17 +56,19 @@ public class Person {
 
     // --> output of the list
     public static void outputPersonen() {
-        System.out.println();
-        System.out.println("Lehrer:");
+        println("\n");
+        println("Lehrer: ");
         for (Person lehrer : lehrerList) {
-            System.out.println(lehrer);
-            System.out.println();
+            String output = lehrer.toString();
+            println(output);
+            println("\n");
         }
-        System.out.println("Schüler:");
+        println("Schüler: ");
         for (Person schueler : schuelerList) {
-            System.out.println(schueler);
+            String output = schueler.toString();
+            println(output);
         }
-        System.out.println();
+        println("\n");
     }
 
     @Override
