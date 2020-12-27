@@ -1,4 +1,4 @@
-package me.simon.mAGmal;
+package me.simon.magmal;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -6,7 +6,9 @@ import javax.swing.*;
 import java.sql.*;
 import java.util.List;
 
-public class SQLInstructions {
+import static me.simon.magmal.Main.*;
+
+public class SqlInstructions {
 
     // Insertion of Students
     public static void insertionStudents(@NotNull List<Person> schuelerList, Connection connection) {
@@ -19,7 +21,6 @@ public class SQLInstructions {
                     "firstName = ?, lastName = ?, class = ?, phonenumber = ?;";
 
             try (final PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-
                 preparedStatement.setInt(1, person.getId());
                 preparedStatement.setString(2, person.vorname);
                 preparedStatement.setString(3, person.nachname);
@@ -30,7 +31,9 @@ public class SQLInstructions {
                 preparedStatement.setString(8, person.klasse);
                 preparedStatement.setString(9, person.telefonnummer);
 
-                System.out.println(preparedStatement.toString());
+                String output = preparedStatement.toString();
+                println(output);
+
 
                 preparedStatement.executeUpdate();
 
@@ -38,8 +41,8 @@ public class SQLInstructions {
                 e.printStackTrace();
             }
         }
-        System.out.println();
-        System.out.println();
+        println("\n");
+        println("\n");
     }
 
     // Insertion of teachers
@@ -60,7 +63,8 @@ public class SQLInstructions {
                 preparedStatement.setString(4, person.vorname);
                 preparedStatement.setString(5, person.nachname);
 
-                System.out.println(preparedStatement.toString());
+                String output = preparedStatement.toString();
+                println(output);
 
                 preparedStatement.executeUpdate();
 
@@ -68,8 +72,8 @@ public class SQLInstructions {
                 e.printStackTrace();
             }
         }
-        System.out.println();
-        System.out.println();
+        println("\n");
+        println("\n");
     }
 
     // Insertion of WG
@@ -86,7 +90,8 @@ public class SQLInstructions {
                 preparedStatement.setString(4, wg.description);
                 preparedStatement.setInt(5, wg.getTeacherHash());
 
-                System.out.println(preparedStatement.toString());
+                String output = preparedStatement.toString();
+                println(output);
 
                 preparedStatement.executeUpdate();
 
@@ -94,8 +99,8 @@ public class SQLInstructions {
                 e.printStackTrace();
             }
         }
-        System.out.println();
-        System.out.println();
+        println("\n");
+        println("\n");
     }
 
     // Request Teacher together with WG
@@ -114,28 +119,21 @@ public class SQLInstructions {
 
         // count columns
         int columns = resultSet.getMetaData().getColumnCount();
-        System.out.println("Alle Eintragungen: ");
+        println("Alle Eintragungen: ");
 
         // output of the columns labels
-        for (int i = 1; i <= columns; i++) {
-            System.out.printf("%16s", resultSet.getMetaData().getColumnLabel(i));
-        }
-        System.out.println();
+        outputLabel(columns, resultSet);
+        println("\n");
 
         // output of each row
-        while (resultSet.next()) {
-            for (int j = 1; j <= columns; j++) {
-                System.out.printf("%16s", resultSet.getString(j));
-            }
-            System.out.println();
-        }
+        outputRow(columns, resultSet);
 
         // --> statement and result set closed
         resultSet.close();
         statement.close();
 
-        System.out.println();
-        System.out.println();
+        println("\n");
+        println("\n");
     }
 
     // Allocation student to WG
@@ -147,31 +145,40 @@ public class SQLInstructions {
         // Student query
         String studentInputFirstName = JOptionPane.showInputDialog("Wie heißt der Schüler mit Vornamen: ");
         String studentInputLastName = JOptionPane.showInputDialog("Wie heißt der Schüler mit Nachnamen: ");
-        String wgInputDescription = JOptionPane.showInputDialog("In welche AG soll der Schüler eingeteilt werden?");
 
-        try (final PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-            for (Person person : schuelerList) {
-                if (person.vorname.equalsIgnoreCase(studentInputFirstName) && person.nachname.equalsIgnoreCase(studentInputLastName)) {
+        boolean found = false;
+        for (Person schueler : schuelerList) {
+            if ((studentInputFirstName.toLowerCase() + "$" + studentInputLastName.toLowerCase()).hashCode() == schueler.getId()) {
+                found = true;
+                println("Schüler ist gelistet!");
+
+                String wgInputDescription = JOptionPane.showInputDialog("In welche AG soll der Schüler eingeteilt werden?");
+
+                try (final PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
                     for (WG wg : wgList) {
                         if (wg.description.equalsIgnoreCase(wgInputDescription)) {
-                            preparedStatement.setInt(1, person.getId());
+                            preparedStatement.setInt(1, schueler.getId());
                             preparedStatement.setInt(2, wg.getID());
 
-                            System.out.println(preparedStatement.toString());
+                            String output = preparedStatement.toString();
+                            println(output);
 
                             preparedStatement.executeUpdate();
-
                         }
 
                     }
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                    break;
                 }
-
+                break;
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
-        System.out.println();
-        System.out.println();
+        if (found == false) {
+            println("Schüler ist nicht gelistet!");
+        }
+        println("\n");
+        println("\n");
     }
 
     // Output WG Members
@@ -217,26 +224,20 @@ public class SQLInstructions {
         // count columns
         assert resultSet != null;
         int columns = resultSet.getMetaData().getColumnCount();
-        System.out.println("Alle Eintragungen zu " + wgAuswahlInput + ": ");
+        println("Alle Eintragungen zu " + wgAuswahlInput + ": ");
 
         // output of the columns labels
-        for (int i = 1; i <= columns; i++) {
-            System.out.printf("%16s", resultSet.getMetaData().getColumnLabel(i));
-        }
-        System.out.println();
+        outputLabel(columns, resultSet);
+
+        println("\n");
 
         // output of each row
-        while (resultSet.next()) {
-            for (int j = 1; j <= columns; j++) {
-                System.out.printf("%16s", resultSet.getString(j));
-            }
-            System.out.println();
-        }
+        outputRow(columns, resultSet);
 
         // --> statement and result set closed
         resultSet.close();
 
-        System.out.println();
-        System.out.println();
+        println("\n");
+        println("\n");
     }
 }

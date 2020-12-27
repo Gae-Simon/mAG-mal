@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="me.simon.magmal.Gui">
+  <grid id="27dc6" binding="rootPanel" layout-manager="GridLayoutManager" row-count="2" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+    <margin top="0" left="0" bottom="0" right="0"/>
+    <constraints>
+      <xy x="20" y="20" width="886" height="465"/>
+    </constraints>
+    <properties/>
+    <border type="none"/>
+    <children>
+      <toolbar id="79a5f">
+        <constraints>
+          <grid row="0" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false">
+            <preferred-size width="-1" height="20"/>
+          </grid>
+        </constraints>
+        <properties/>
+        <border type="none"/>
+        <children>
+          <component id="f8f6d" class="javax.swing.JButton" binding="schuelerEinlesenButton">
+            <constraints/>
+            <properties>
+              <text value="Schüler einlesen"/>
+            </properties>
+          </component>
+          <component id="ce85d" class="javax.swing.JButton" binding="lehrerEinlesenButton">
+            <constraints/>
+            <properties>
+              <text value="Lehrer einlesen"/>
+            </properties>
+          </component>
+          <component id="af679" class="javax.swing.JButton" binding="AGEinlesenButton" default-binding="true">
+            <constraints/>
+            <properties>
+              <text value="AG einlesen"/>
+            </properties>
+          </component>
+          <component id="a6a65" class="javax.swing.JButton" binding="lehrerZusammenMitAGButton" default-binding="true">
+            <constraints/>
+            <properties>
+              <text value="Lehrer zusammen mit AG"/>
+            </properties>
+          </component>
+          <component id="37645" class="javax.swing.JButton" binding="zuordnungSchuelerZuAGButton">
+            <constraints/>
+            <properties>
+              <text value="Zuordnung Schüler zu AG"/>
+            </properties>
+          </component>
+          <component id="19361" class="javax.swing.JButton" binding="ausgabeAGMitgliederButton" default-binding="true">
+            <constraints/>
+            <properties>
+              <text value="Ausgabe AG Mitglieder"/>
+            </properties>
+          </component>
+        </children>
+      </toolbar>
+      <scrollpane id="d356f">
+        <constraints>
+          <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties/>
+        <border type="none"/>
+        <children>
+          <component id="a02ca" class="javax.swing.JTextArea" binding="textArea1" default-binding="true">
+            <constraints/>
+            <properties>
+              <font name="Consolas"/>
+            </properties>
+          </component>
+        </children>
+      </scrollpane>
+    </children>
+  </grid>
+</form>

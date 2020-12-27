@@ -1,8 +1,10 @@
-package me.simon.mAGmal;
+package me.simon.magmal;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+
+import static me.simon.magmal.Main.println;
 
 public class WG {
 
@@ -40,12 +42,13 @@ public class WG {
 
     // --> output of the List
     public static void outputWG() {
-        System.out.println();
-        System.out.println("WGs:");
+        println("\n");
+        println("WGs: ");
         for (WG wg : wgList) {
-            System.out.println(wg);
+            String output = wg.toString();
+            println(output);
         }
-        System.out.println();
+        println("\n");
     }
 
     @Override
