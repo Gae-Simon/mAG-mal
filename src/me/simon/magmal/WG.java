@@ -25,7 +25,7 @@ public class WG {
 
     // get Teacher Hash Code
     public int getTeacherHash (){
-        return (this.teacherfirstname + "$" + this.teacherlastname).hashCode();
+        return (this.teacherfirstname.toLowerCase() + "$" + this.teacherlastname.toLowerCase()).hashCode();
     }
     // create List for WG
     public static ArrayList<WG> wgList = new ArrayList<>();
