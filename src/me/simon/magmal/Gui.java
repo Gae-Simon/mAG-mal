@@ -1,4 +1,4 @@
-package me.simon.mAGmal;
+package me.simon.magmal;
 
 import javax.swing.*;
 

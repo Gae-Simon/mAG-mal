@@ -1,4 +1,4 @@
-package me.simon.mAGmal;
+package me.simon.magmal;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -6,7 +6,7 @@ import javax.swing.*;
 import java.sql.*;
 import java.util.List;
 
-import static me.simon.mAGmal.Main.*;
+import static me.simon.magmal.Main.*;
 
 public class SqlInstructions {
 

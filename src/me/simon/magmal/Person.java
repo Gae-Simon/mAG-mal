@@ -1,10 +1,10 @@
-package me.simon.mAGmal;
+package me.simon.magmal;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
-import static me.simon.mAGmal.Main.println;
+import static me.simon.magmal.Main.println;
 
 public class Person {
 
