@@ -8,7 +8,7 @@ import java.util.List;
 
 import static me.simon.mAGmal.Main.*;
 
-public class SQLInstructions {
+public class SqlInstructions {
 
     // Insertion of Students
     public static void insertionStudents(@NotNull List<Person> schuelerList, Connection connection) {
@@ -122,11 +122,11 @@ public class SQLInstructions {
         println("Alle Eintragungen: ");
 
         // output of the columns labels
-        outputlabel(columns, resultSet);
+        outputLabel(columns, resultSet);
         println("\n");
 
         // output of each row
-        outputrow(columns, resultSet);
+        outputRow(columns, resultSet);
 
         // --> statement and result set closed
         resultSet.close();
@@ -146,29 +146,24 @@ public class SQLInstructions {
         String studentInputFirstName = JOptionPane.showInputDialog("Wie heißt der Schüler mit Vornamen: ");
         String studentInputLastName = JOptionPane.showInputDialog("Wie heißt der Schüler mit Nachnamen: ");
 
+        boolean found = false;
         for (Person schueler : schuelerList) {
-            if ((studentInputFirstName + "$" + studentInputLastName).hashCode() == schueler.getId()) {
+            if ((studentInputFirstName.toLowerCase() + "$" + studentInputLastName.toLowerCase()).hashCode() == schueler.getId()) {
+                found = true;
                 println("Schüler ist gelistet!");
 
                 String wgInputDescription = JOptionPane.showInputDialog("In welche AG soll der Schüler eingeteilt werden?");
 
                 try (final PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-                    for (Person person : schuelerList) {
+                    for (WG wg : wgList) {
+                        if (wg.description.equalsIgnoreCase(wgInputDescription)) {
+                            preparedStatement.setInt(1, schueler.getId());
+                            preparedStatement.setInt(2, wg.getID());
 
-                        if (person.vorname.equalsIgnoreCase(studentInputFirstName) && person.nachname.equalsIgnoreCase(studentInputLastName)) {
-                            for (WG wg : wgList) {
-                                if (wg.description.equalsIgnoreCase(wgInputDescription)) {
-                                    preparedStatement.setInt(1, person.getId());
-                                    preparedStatement.setInt(2, wg.getID());
+                            String output = preparedStatement.toString();
+                            println(output);
 
-                                    String output = preparedStatement.toString();
-                                    println(output);
-
-                                    preparedStatement.executeUpdate();
-                                    break;
-                                }
-
-                            }
+                            preparedStatement.executeUpdate();
                         }
 
                     }
@@ -176,10 +171,11 @@ public class SQLInstructions {
                     e.printStackTrace();
                     break;
                 }
-            } if((studentInputFirstName +"$" + studentInputLastName).hashCode() != schueler.getId()) {
-                println("Schüler ist nicht gelistet!");
                 break;
             }
+        }
+        if (found == false) {
+            println("Schüler ist nicht gelistet!");
         }
         println("\n");
         println("\n");
@@ -231,12 +227,12 @@ public class SQLInstructions {
         println("Alle Eintragungen zu " + wgAuswahlInput + ": ");
 
         // output of the columns labels
-        outputlabel(columns, resultSet);
+        outputLabel(columns, resultSet);
 
         println("\n");
 
         // output of each row
-        outputrow(columns, resultSet);
+        outputRow(columns, resultSet);
 
         // --> statement and result set closed
         resultSet.close();

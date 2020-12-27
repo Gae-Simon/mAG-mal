@@ -31,21 +31,21 @@ public class Main {
         gui.textArea1.setCaretPosition(gui.textArea1.getDocument().getLength() - 1);
     }
 
-    public static void outputlabel(int columns, final ResultSet resultSet) throws SQLException {
+    public static void outputLabel(int columns, final ResultSet resultSet) throws SQLException {
         for (int i = 1; i <= columns; i++) {
             System.out.printf("%16s", resultSet.getMetaData().getColumnLabel(i));
 
             //--> output message of Text Area
             String output = resultSet.getMetaData().getColumnLabel(i);
-            gui.textArea1.append(output + "  ");
+            gui.textArea1.append(String.format("%16s", output));
         }
     }
 
-    public static void outputrow(int columns, final ResultSet resultSet) throws SQLException {
+    public static void outputRow(int columns, final ResultSet resultSet) throws SQLException {
         while (resultSet.next()) {
             for (int i = 1; i <= columns; i++) {
                 System.out.printf("%16s", resultSet.getString(i));
-                gui.textArea1.append(resultSet.getString(i) + "  ");
+                gui.textArea1.append(String.format("%16s", resultSet.getString(i)));
             }
             println("\n");
         }
@@ -116,7 +116,7 @@ public class Main {
                         @Override
                         public void actionPerformed(ActionEvent e) {
                             // Insertion of the students
-                            SQLInstructions.insertionStudents(schuelerList, connection);
+                            SqlInstructions.insertionStudents(schuelerList, connection);
                         }
                     });
 
@@ -124,7 +124,7 @@ public class Main {
                         @Override
                         public void actionPerformed(ActionEvent e) {
                             //Insertion of the teachers
-                            SQLInstructions.insertionTeacher(lehrerList, connection);
+                            SqlInstructions.insertionTeacher(lehrerList, connection);
                         }
                     });
 
@@ -132,7 +132,7 @@ public class Main {
                         @Override
                         public void actionPerformed(ActionEvent e) {
                             // Insertion of the WG
-                            SQLInstructions.insertionWG(wgList, connection);
+                            SqlInstructions.insertionWG(wgList, connection);
                         }
                     });
 
@@ -141,7 +141,7 @@ public class Main {
                         public void actionPerformed(ActionEvent e) {
                             // Request Teacher together with WG
                             try {
-                                SQLInstructions.requestTeacherTogetherWG(wgList, lehrerList, connection);
+                                SqlInstructions.requestTeacherTogetherWG(wgList, lehrerList, connection);
                             } catch (SQLException throwables) {
                                 throwables.printStackTrace();
                             }
@@ -153,7 +153,7 @@ public class Main {
                         public void actionPerformed(ActionEvent e) {
                             //Allocation student to WG
                             try {
-                                SQLInstructions.studentAllocate(wgList, schuelerList, connection);
+                                SqlInstructions.studentAllocate(wgList, schuelerList, connection);
                             } catch (SQLException throwables) {
                                 throwables.printStackTrace();
                             }
@@ -165,7 +165,7 @@ public class Main {
                         public void actionPerformed(ActionEvent e) {
                             // Output WG Members
                             try {
-                                SQLInstructions.wgMemberOutput(connection);
+                                SqlInstructions.wgMemberOutput(connection);
                             } catch (SQLException throwables) {
                                 throwables.printStackTrace();
                             }

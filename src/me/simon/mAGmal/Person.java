@@ -23,7 +23,7 @@ public class Person {
 
     // get ID with Hash Code
     public int getId() {
-        return (this.vorname + "$" + this.nachname).hashCode();
+        return (this.vorname.toLowerCase() + "$" + this.nachname.toLowerCase()).hashCode();
     }
 
     // --> create list for teacher and student

@@ -64,7 +64,9 @@
         <children>
           <component id="a02ca" class="javax.swing.JTextArea" binding="textArea1" default-binding="true">
             <constraints/>
-            <properties/>
+            <properties>
+              <font name="Consolas"/>
+            </properties>
           </component>
         </children>
       </scrollpane>
