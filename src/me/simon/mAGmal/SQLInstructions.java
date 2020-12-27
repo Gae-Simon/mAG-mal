@@ -6,8 +6,7 @@ import javax.swing.*;
 import java.sql.*;
 import java.util.List;
 
-import static me.simon.mAGmal.Main.printf;
-import static me.simon.mAGmal.Main.println;
+import static me.simon.mAGmal.Main.*;
 
 public class SQLInstructions {
 
@@ -123,18 +122,11 @@ public class SQLInstructions {
         println("Alle Eintragungen: ");
 
         // output of the columns labels
-        for (int i = 1; i <= columns; i++) {
-            System.out.printf("%16s", resultSet.getMetaData().getColumnLabel(i));
-        }
+        outputlabel(columns, resultSet);
         println("\n");
 
         // output of each row
-        while (resultSet.next()) {
-            for (int j = 1; j <= columns; j++) {
-                System.out.printf("%16s", resultSet.getString(j));
-            }
-            println("\n");
-        }
+        outputrow(columns, resultSet);
 
         // --> statement and result set closed
         resultSet.close();
@@ -153,30 +145,41 @@ public class SQLInstructions {
         // Student query
         String studentInputFirstName = JOptionPane.showInputDialog("Wie heißt der Schüler mit Vornamen: ");
         String studentInputLastName = JOptionPane.showInputDialog("Wie heißt der Schüler mit Nachnamen: ");
-        String wgInputDescription = JOptionPane.showInputDialog("In welche AG soll der Schüler eingeteilt werden?");
 
-        try (final PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-            for (Person person : schuelerList) {
+        for (Person schueler : schuelerList) {
+            if ((studentInputFirstName + "$" + studentInputLastName).hashCode() == schueler.getId()) {
+                println("Schüler ist gelistet!");
 
-                if (person.vorname.equalsIgnoreCase(studentInputFirstName) && person.nachname.equalsIgnoreCase(studentInputLastName)) {
-                    for (WG wg : wgList) {
-                        if (wg.description.equalsIgnoreCase(wgInputDescription)) {
-                            preparedStatement.setInt(1, person.getId());
-                            preparedStatement.setInt(2, wg.getID());
+                String wgInputDescription = JOptionPane.showInputDialog("In welche AG soll der Schüler eingeteilt werden?");
 
-                            String output = preparedStatement.toString();
-                            println(output);
+                try (final PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+                    for (Person person : schuelerList) {
 
-                            preparedStatement.executeUpdate();
+                        if (person.vorname.equalsIgnoreCase(studentInputFirstName) && person.nachname.equalsIgnoreCase(studentInputLastName)) {
+                            for (WG wg : wgList) {
+                                if (wg.description.equalsIgnoreCase(wgInputDescription)) {
+                                    preparedStatement.setInt(1, person.getId());
+                                    preparedStatement.setInt(2, wg.getID());
 
+                                    String output = preparedStatement.toString();
+                                    println(output);
+
+                                    preparedStatement.executeUpdate();
+                                    break;
+                                }
+
+                            }
                         }
 
                     }
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                    break;
                 }
-
+            } if((studentInputFirstName +"$" + studentInputLastName).hashCode() != schueler.getId()) {
+                println("Schüler ist nicht gelistet!");
+                break;
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
         println("\n");
         println("\n");
@@ -228,21 +231,12 @@ public class SQLInstructions {
         println("Alle Eintragungen zu " + wgAuswahlInput + ": ");
 
         // output of the columns labels
-        for (int i = 1; i <= columns; i++) {
-            Object message = resultSet.getMetaData().getColumnLabel(i);
-            printf("%16s", message);
+        outputlabel(columns, resultSet);
 
-            System.out.printf("%16s", resultSet.getMetaData().getColumnLabel(i));
-        }
         println("\n");
 
         // output of each row
-        while (resultSet.next()) {
-            for (int j = 1; j <= columns; j++) {
-                System.out.printf("%16s", resultSet.getString(j));
-            }
-            println("\n");
-        }
+        outputrow(columns, resultSet);
 
         // --> statement and result set closed
         resultSet.close();

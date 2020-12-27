@@ -1,12 +1,12 @@
 package me.simon.mAGmal;
 
 import javax.swing.*;
-import javax.swing.text.DefaultCaret;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
@@ -28,14 +28,27 @@ public class Main {
 
         // --> output message of Text Area
         gui.textArea1.append(message + "\n");
-        gui.textArea1.setCaretPosition(gui.textArea1.getDocument().getLength()-1);
+        gui.textArea1.setCaretPosition(gui.textArea1.getDocument().getLength() - 1);
     }
 
-    public static void printf(final String distance, final Object message) {
-        System.out.printf(distance, message);
+    public static void outputlabel(int columns, final ResultSet resultSet) throws SQLException {
+        for (int i = 1; i <= columns; i++) {
+            System.out.printf("%16s", resultSet.getMetaData().getColumnLabel(i));
 
-        //--> output message of Text Area
-        // TODO: finish that
+            //--> output message of Text Area
+            String output = resultSet.getMetaData().getColumnLabel(i);
+            gui.textArea1.append(output + "  ");
+        }
+    }
+
+    public static void outputrow(int columns, final ResultSet resultSet) throws SQLException {
+        while (resultSet.next()) {
+            for (int i = 1; i <= columns; i++) {
+                System.out.printf("%16s", resultSet.getString(i));
+                gui.textArea1.append(resultSet.getString(i) + "  ");
+            }
+            println("\n");
+        }
     }
 
     //--> main Method
@@ -83,6 +96,7 @@ public class Main {
                 }
             }));
             println("Connection is successful!");
+            println("\n");
 
             // get Lists
             ArrayList<Person> schuelerList = Person.getSchuelerList();
